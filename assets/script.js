@@ -19,7 +19,7 @@ function standardConversion(apikey) {
         var rate = conversionRates[currency];
         $('.dropdown-menu').append(
           $('<li>').append(
-            $('<button>').addClass('dropdown-item').attr('type', 'button').text(currency + ': ' + rate)
+            $('<button>').addClass('dropdown-item').attr('type', 'button').text(currency + ': ' + rate.toFixed(2))
           )
         );
       }
