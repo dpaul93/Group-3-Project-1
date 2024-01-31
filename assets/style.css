@@ -1,1 +1,5 @@
-
+/* allow user to scroll dropdown */
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
