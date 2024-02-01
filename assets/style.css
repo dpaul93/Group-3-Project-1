@@ -3,3 +3,20 @@
     max-height: 280px;
     overflow-y: auto;
 }
+
+
+.center-text{
+    text-align: center;
+}
+
+.card{
+    top: -7vh
+}
+
+.jumb-color{
+    background-color: #2196f3!important;
+}
+
+.convert-img{
+    width: 5vh;
+}
