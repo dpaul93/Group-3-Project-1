@@ -1,4 +1,4 @@
-apikey = '7f0a6ddf60b1ba51cd9d0d19';
+var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
 function standardConversion(apikey) {
   var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
@@ -14,18 +14,21 @@ function standardConversion(apikey) {
       // Clear existing dropdown items
       $('.dropdown-menu').empty();
 
+      // Log the array here for countrycodemapping
+      console.log(currencies);
       // Append conversion rates to dropdown menu
       for (var currency in conversionRates) {
         var rate = conversionRates[currency];
-        $('.dropdown-menu').append(
-          $('<li>').append(
-            $('<button>').addClass('dropdown-item').attr('type', 'button').text(currency + ': ' + rate.toFixed(2))
-          )
+        $('.form-select').append(
+          $('<option>').attr('option', currency).text(currency)
         );
       }
     });
 }
-standardConversion(apikey)
+
+// Call the function with the provided apikey
+standardConversion(apikey);
+
 
 function pairedConversion(apikey){
 var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/pair/EUR/GBP';
