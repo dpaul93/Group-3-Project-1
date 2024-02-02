@@ -47,7 +47,3 @@ fetch(pairedConversion)
   });
 }
 pairedConversion(apikey)
-
-// CALENDAR
-
-

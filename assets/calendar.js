@@ -5,6 +5,8 @@ const month = dayjs().format('MMMM');
 const date = dayjs().format('DD');
 const year = dayjs().format('YYYY');
 
+console.log(year);
+
 function updateCurrentTime() {
     const currentTimeElement = document.getElementById('current-time');    
     const currentTime = dayjs().format('HH:mm:ss');
@@ -24,13 +26,3 @@ currentDate.textContent = date;
 
 const currentYear = document.getElementById('current-year');
 currentYear.textContent = year;
-
-
-
-
-
-
-
-
-
-

@@ -47,11 +47,34 @@ table {
 
 .calendar {
     position: absolute;
+    height: 200px;
     margin-top: 0;
     top: 20%;
-    left: 20%;
+    left: 20%;   
 }
+
+.snowman {
+    text-align: center;    
+}
+
+.snowman img {
+    width: 100px;    
+    transform-origin: center center; 
+    transition-duration: 1000ms;
+    margin-bottom: -55px;
+    opacity: 0;
+    z-index: -1;
+}
+
+.calendar:hover .snowman img{
+    transform: translateY(-55px);
+    transition-duration: 1000ms;
+    opacity: 1;
+    z-index: 1;    
+  }
+
 .calendar-card {   
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,8 +83,7 @@ table {
     height: 180px;
     border: 3px solid red;
     border-radius: 20px 20px 15px 15px ;
-    overflow: hidden;
-    box-shadow: rgba(252, 38, 38, 0.74) 0px 5px 15px;
+    overflow: hidden;   
 }
 
 .calendar-header, .calendar-footer {
@@ -69,22 +91,33 @@ table {
     text-align: center;
     width: 100%;
     height: 20%;
-    background-color: bisque;        
+    color: white;        
+    background-color: red;       
+}
+.calendar-header {
+    height: 22%;
 }
 
-
+.calendar-footer {
+    height: 15%;
+}
 
 .calendar-body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60%;
+    width: 100%;
+    height: 63%;
+    background-color: #fff;
+    box-shadow: 
+        inset 0px 11px 14px -10px red,
+        inset 0px -11px 14px -10px red;
 }
 
 .current-day {
     font-family: 'Lobster', sans-serif;
-    margin-top: 6%;
+    margin-top: 3%;
     text-transform: uppercase;
     font-size: 16px;
     padding-top: 2px;
@@ -100,9 +133,7 @@ table {
 .current-date {
     font-size: 34px;
     font-weight: bolder;
-    padding: 4px;
-    color: red;
-    text-shadow: rgba(252, 38, 38, 0.74) 0px 5px 15px;
+    padding: 4px;    
 }
 
 .current-time {
@@ -119,4 +150,10 @@ table {
     font-size: 16px;    
 }
 
+.circle {
+    background: white;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
 
