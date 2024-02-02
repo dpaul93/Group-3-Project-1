@@ -11,18 +11,22 @@ function standardConversion(apikey) {
       console.log('standard conversion', data);
       var conversionRates = data.conversion_rates;
 
-      // Clear existing dropdown items
-      $('.dropdown-menu').empty();
+      // Log array for countrycodemapping
+      // console.log(currencies);
 
-      // Log the array here for countrycodemapping
-      console.log(currencies);
-      // Append conversion rates to dropdown menu
-      for (var currency in conversionRates) {
-        var rate = conversionRates[currency];
-        $('.form-select').append(
-          $('<option>').attr('option', currency).text(currency)
-        );
+      // Append conversion rates to select menus
+      for (var currency in currencies) {
+        // console.log(currency + ': ' + currencies[currency]);
+        $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
+        $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
       }
+
+      // Event listener for convert button
+      $('#convertButton').on('click', function() {
+        var baseCoin = $('#baseCoinSelect').val();
+        var targetCoin = $('#targetCoinSelect').val();
+        pairedConversion(apikey, baseCoin, targetCoin);
+      });
     });
 }
 
@@ -30,8 +34,8 @@ function standardConversion(apikey) {
 standardConversion(apikey);
 
 
-function pairedConversion(apikey){
-var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/pair/EUR/GBP';
+function pairedConversion(apikey, baseCoin, targetCoin){
+var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/pair/'+baseCoin+'/'+targetCoin+'';
 
 fetch(pairedConversion)
   .then(function (response) {
@@ -43,10 +47,10 @@ fetch(pairedConversion)
     var timeLastUpdateUnix = data.time_last_update_unix
     var timeLastUpdateUtc = data.time_last_update_utc
     var conversionRates = data.conversion_rate
-
-    console.log(timeLastUpdateUnix)
+    var currencyAmount = $('#currencyAmount').val().trim()
+    console.log(conversionRates)
+    $('.conversionRate').text(conversionRates)
 
 
   });
 }
-pairedConversion(apikey)
