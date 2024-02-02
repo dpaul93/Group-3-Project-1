@@ -8,12 +8,7 @@ function standardConversion(apikey) {
       return response.json();
     })
     .then(function(data) {
-      console.log('standard conversion', data);
       var conversionRates = data.conversion_rates;
-
-      // Log array for countrycodemapping
-      // console.log(currencies);
-
       // Append conversion rates to select menus
       for (var currency in currencies) {
         // console.log(currency + ': ' + currencies[currency]);
@@ -49,7 +44,6 @@ fetch(pairedConversion)
     return response.json();
   })
   .then(function (data) {
-    console.log('paird converstion',data)
     var baseCode = data.base_code
     var currencyName = data.target_data.currency_name_short
     var flagUrl = data.target_data.flag_url
@@ -58,7 +52,6 @@ fetch(pairedConversion)
     var timeLastUpdateUtc = data.time_last_update_utc
     var conversionRate = data.conversion_rate
     var convertedRate = currencyAmount * conversionRate
-    console.log(flagUrl);
     var flagImg = $('<img>');
     flagImg.attr('src', flagUrl);
     $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate + ' ' + locale + ' ' + currencyName);
