@@ -15,10 +15,11 @@
 }
 
 .jumb-color{
-    height: 37vh;
-    background: url('./img/jumb-2.jpg');
+    height: 42vh;
+    background: url('./img/jumb-7.jpg');
     background-size: cover;
     background-position: center;
+    /* background-position-y: center; */
     background-repeat: no-repeat;
 }
 
