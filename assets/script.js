@@ -34,7 +34,7 @@ function pairedConversion(apikey, baseCoin, targetCoin){
   $('.conversionRate').text('')
   if(!currencyAmount){
     // alert('no amount defined')
-    $('.conversionRate').text('No Amount defined');
+    $('.conversionRate').html('<strong style="color:red;">No Amount defined!</strong>');
     return //exit function if no amount defined
   }
 var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/enriched/'+baseCoin+'/'+targetCoin+'';
