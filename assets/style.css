@@ -5,16 +5,21 @@
 }
 
 
-.center-text{
+.jumb-color .text-center {
     text-align: center;
+    color:white;
 }
 
 .card{
-    top: -7vh
+    top: -13vh
 }
 
 .jumb-color{
-    background-color: #2196f3!important;
+    height: 37vh;
+    background: url('./img/jumb-2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .convert-img{
