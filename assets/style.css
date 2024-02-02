@@ -3,3 +3,26 @@
     max-height: 280px;
     overflow-y: auto;
 }
+
+
+.jumb-color .text-center {
+    text-align: center;
+    color:white;
+}
+
+.card{
+    top: -13vh
+}
+
+.jumb-color{
+    height: 42vh;
+    background: url('./img/jumb-7.jpg');
+    background-size: cover;
+    background-position: center;
+    /* background-position-y: center; */
+    background-repeat: no-repeat;
+}
+
+.convert-img{
+    width: 5vh;
+}
