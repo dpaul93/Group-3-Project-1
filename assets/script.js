@@ -38,7 +38,7 @@ standardConversion(apikey);
 
 
 function pairedConversion(apikey, baseCoin, targetCoin) {
-    
+
     // Retrieve Value user enters into currency amount field and trim any white space
     var currencyAmount = $('#currencyAmount').val().trim()
 
@@ -97,19 +97,22 @@ function historicalCurrencyData(currencies) {
         $('#historicalBaseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
     }
 
+    // Event listener for historical conversions 
     $('#getHistoryData').on('click', function () {
+
+        // Get user input for historical coin selection
         var selectedCurrency = $('#historicalBaseCoinSelect').val();
 
-        // Get the selected date by the user using `this`
+        // Get the selected date by the user input
         var selectedDate = $('#historicalDate').val();
 
         // Split the user selectedDate using the hyphen in between the date 
-        var parts = selectedDate.split('-');
+        var dateSplit = selectedDate.split('-');
 
         // Number function to convert the string to a number which will remove any trailing zeros to be passed to api request
-        var year = Number(parts[0]);
-        var month = Number(parts[1]);
-        var day = Number(parts[2]);
+        var year = Number(dateSplit[0]);
+        var month = Number(dateSplit[1]);
+        var day = Number(dateSplit[2]);
 
         var historicalData = 'https://v6.exchangerate-api.com/v6/' + apikey + '/history/' + selectedCurrency + '/' + year + '/' + month + '/' + day;
 
