@@ -54,8 +54,6 @@ fetch(pairedConversion)
     var convertedRate = currencyAmount * conversionRate
     var flagImg = $('<img>');
     flagImg.attr('src', flagUrl);
-    $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate + ' ' + locale + ' ' + currencyName);
-
-
+    $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate.toFixed(2) + ' ' + locale + ' ' + currencyName);
   });
 }
