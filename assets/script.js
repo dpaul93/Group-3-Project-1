@@ -14,12 +14,18 @@ function standardConversion(apikey) {
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
 
-            // Append conversion rates to select menus
+            // Append conversion rates to select menus from the countryCodeMapping file
             for (var currency in currencies) {
                 // console.log(currency + ': ' + currencies[currency]);
                 $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency])),
                     $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
+
+            // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
+            $('#resetExchangeAmount').on('click', function () {
+                // Clear the input value
+                $('#currencyAmount').val('');
+            });
 
             // Event listener for convert button
             $('#convertButton').on('click', function () {
@@ -42,20 +48,25 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
     // Retrieve Value user enters into currency amount field and trim any white space
     var currencyAmount = $('#currencyAmount').val().trim()
 
-    // Clear the conversionRate card text 
-    $('.conversionRate').text('')
-
-
-    //add class to border of conversion rates card and show card
-    $('.rateCard').addClass('border-success');
+    // Show card
     $('.rateCard').show()
+
+    // Removing the card header danger background colour class and adding the success colour background class 
+    $('.display-header').text('Conversion rates').removeClass('text-bg-danger').addClass('text-bg-success');
 
     //if no currency amount or user enters currency as 0 then show card and add error message
     if (!currencyAmount || currencyAmount == 0) {
+
+        //show the card to display the error message
+
         $('.rateCard').show()
-        //remove class to border of conversion rates card
-        $('.rateCard').addClass('border-danger');
+
+        // Adding header card background colour danger when user enters no currency or `0`
+        $('.display-header').text('Error').addClass('text-bg-danger')
+
+        // Adding text to card when user enters no currency or `0`
         $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
+
         //exit function if no amount defined
         return
     }
@@ -68,7 +79,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
         })
         .then(function (data) {
 
-            // All Variables that can be access from reponse of paired conversion request
+            // All Variables that can be accessed from response of paired conversion request
             var baseCode = data.base_code
             var currencyName = data.target_data.currency_name_short
             var flagUrl = data.target_data.flag_url
@@ -100,6 +111,8 @@ function historicalCurrencyData(currencies) {
     // Event listener for historical conversions 
     $('#getHistoryData').on('click', function () {
 
+        $('.loading-message').show();
+
         // Get user input for historical coin selection
         var selectedCurrency = $('#historicalBaseCoinSelect').val();
 
@@ -121,6 +134,8 @@ function historicalCurrencyData(currencies) {
                 return response.json();
             })
             .then(function (data) {
+
+                $('.loading-message').hide();
                 var histoicalConversionRates = data.conversion_rates;
 
                 // Reference to the tbody element
@@ -169,7 +184,7 @@ function historicalCurrencyData(currencies) {
                 $('.historyTable').css('display', 'inline-table');
 
                 // Add css to apply scroll to table and set height of table
-                $('.table-responsive').css('overflow-y', 'scroll').css('height', '200px');
+                $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
 
             });
     });
