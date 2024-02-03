@@ -8,9 +8,13 @@ function standardConversion(apikey) {
             return response.json();
         })
         .then(function (data) {
-            var conversionRates = data.conversion_rates;
-            // Append conversion rates to select menus
+
+            // SINGLE CONVERSION LOGIC WILL GO HERE
+
+            //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
+
+            // Append conversion rates to select menus
             for (var currency in currencies) {
                 // console.log(currency + ': ' + currencies[currency]);
                 $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency])),
@@ -19,8 +23,12 @@ function standardConversion(apikey) {
 
             // Event listener for convert button
             $('#convertButton').on('click', function () {
+
+                //get value of the base and target coin user has selected
                 var baseCoin = $('#baseCoinSelect').val();
                 var targetCoin = $('#targetCoinSelect').val();
+
+                // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
             });
         });
@@ -30,14 +38,20 @@ standardConversion(apikey);
 
 
 function pairedConversion(apikey, baseCoin, targetCoin) {
+    
+    // Retrieve Value user enters into currency amount field and trim any white space
     var currencyAmount = $('#currencyAmount').val().trim()
 
+    // Clear the conversionRate card text 
     $('.conversionRate').text('')
-    //add class to border of conversion rates card
+
+
+    //add class to border of conversion rates card and show card
     $('.rateCard').addClass('border-success');
     $('.rateCard').show()
-    if (!currencyAmount || currencyAmount == 0) {
 
+    //if no currency amount or user enters currency as 0 then show card and add error message
+    if (!currencyAmount || currencyAmount == 0) {
         $('.rateCard').show()
         //remove class to border of conversion rates card
         $('.rateCard').addClass('border-danger');
@@ -45,6 +59,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
         //exit function if no amount defined
         return
     }
+
     var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/enriched/' + baseCoin + '/' + targetCoin + '';
 
     fetch(pairedConversion)
@@ -52,6 +67,8 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
             return response.json();
         })
         .then(function (data) {
+
+            // All Variables that can be access from reponse of paired conversion request
             var baseCode = data.base_code
             var currencyName = data.target_data.currency_name_short
             var flagUrl = data.target_data.flag_url
@@ -59,27 +76,37 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
             var timeLastUpdateUnix = data.time_last_update_unix
             var timeLastUpdateUtc = data.time_last_update_utc
             var conversionRate = data.conversion_rate
+
+            // Equation to get exchange amount based on conversion rate of target coin selected
             var convertedRate = currencyAmount * conversionRate
+
+            // Add flag image from response of paired conversion request
             var flagImg = $('<img>');
             flagImg.attr('src', flagUrl);
 
+            // Append the flag, converted rate, locale and currency name to conversion rate card
             $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate + ' ' + locale + ' ' + currencyName);
-
-
         });
 }
 
 function historicalCurrencyData(currencies) {
+
+    // For in loop to loop through currencies object in countryCodMapping.js file and append to 
+    // historicalBaseCoinSelect select option setting value and text
     for (var currency in currencies) {
         $('#historicalBaseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
     }
+
     $('#getHistoryData').on('click', function () {
         var selectedCurrency = $('#historicalBaseCoinSelect').val();
-        //get the selected date by the user using `this`
+
+        // Get the selected date by the user using `this`
         var selectedDate = $('#historicalDate').val();
-        //split the user selectedDate using the hyphen in between the date 
+
+        // Split the user selectedDate using the hyphen in between the date 
         var parts = selectedDate.split('-');
-        //number function to convert the string to a number which will remove any trailing zeros to be passed to api request
+
+        // Number function to convert the string to a number which will remove any trailing zeros to be passed to api request
         var year = Number(parts[0]);
         var month = Number(parts[1]);
         var day = Number(parts[2]);
@@ -96,15 +123,25 @@ function historicalCurrencyData(currencies) {
                 // Reference to the tbody element
                 var tbody = $('.historyTable tbody');
 
-                // Clear the tbody before adding new rows
+                // Clear the table body before adding new rows
                 tbody.empty();
 
                 // Add table headers
                 var thead = $('.historyTable thead');
+
+                // Clear table headers
                 thead.empty();
+
+                // Create new table row
                 var headersRow = $('<tr>');
+
+                // Append currency text to table head to headers row
                 headersRow.append($('<th>').text('Currency'));
+
+                // Append Conversion Rate text to table head to headers row
                 headersRow.append($('<th>').text('Conversion Rate'));
+
+                // Append headers row with text to table head
                 thead.append(headersRow);
 
                 // Loop through conversion rates and add rows to the table
@@ -127,8 +164,10 @@ function historicalCurrencyData(currencies) {
 
                 // Show the table
                 $('.historyTable').css('display', 'inline-table');
+
+                // Add css to apply scroll to table and set height of table
                 $('.table-responsive').css('overflow-y', 'scroll').css('height', '200px');
-                $('#base-coin').text(selectedCurrency);
+
             });
     });
 }
