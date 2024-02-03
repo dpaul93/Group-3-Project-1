@@ -36,7 +36,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
     //add class to border of conversion rates card
     $('.rateCard').addClass('border-success');
     $('.rateCard').show()
-    if (!currencyAmount) {
+    if (!currencyAmount || currencyAmount == 0) {
 
         $('.rateCard').show()
         //remove class to border of conversion rates card
