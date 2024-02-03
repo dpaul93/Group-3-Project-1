@@ -32,15 +32,19 @@ standardConversion(apikey);
 
 function pairedConversion(apikey, baseCoin, targetCoin) {
   var currencyAmount = $('#currencyAmount').val().trim()
+  
   $('.conversionRate').text('')
+  //add class to border of conversion rates card
+  $('.rateCard').addClass('border-success');
   $('.rateCard').show()
   if (!currencyAmount) {
-    // alert('no amount defined')
     
     $('.rateCard').show()
+    //remove class to border of conversion rates card
+    $('.rateCard').addClass('border-danger');
     $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
-    
-    return //exit function if no amount defined
+    //exit function if no amount defined
+    return 
   }
   var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/enriched/' + baseCoin + '/' + targetCoin + '';
 
