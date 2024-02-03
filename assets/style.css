@@ -26,3 +26,7 @@
 .convert-img{
     width: 5vh;
 }
+
+.historyTable{
+    display: none;
+}
