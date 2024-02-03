@@ -33,10 +33,13 @@ standardConversion(apikey);
 function pairedConversion(apikey, baseCoin, targetCoin) {
   var currencyAmount = $('#currencyAmount').val().trim()
   $('.conversionRate').text('')
+  $('.rateCard').show()
   if (!currencyAmount) {
     // alert('no amount defined')
-    $('.conversionRate').html('<strong style="color:red;">No Amount defined!</strong>');
-    $('.rateCard').hide();
+    
+    $('.rateCard').show()
+    $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
+    
     return //exit function if no amount defined
   }
   var pairedConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/enriched/' + baseCoin + '/' + targetCoin + '';
@@ -56,7 +59,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
       var convertedRate = currencyAmount * conversionRate
       var flagImg = $('<img>');
       flagImg.attr('src', flagUrl);
-      // $('.rateCard').hide();
+      
       $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate + ' ' + locale + ' ' + currencyName);
 
 
@@ -85,24 +88,43 @@ function historicalCurrencyData(currencies) {
               return response.json();
           })
           .then(function (data) {
-            var histoicalConversionRates = data.conversion_rates
+            var histoicalConversionRates = data.conversion_rates;
+
+            // Reference to the tbody element
+            var tbody = $('.historyTable tbody');
+        
+            // Clear the tbody before adding new rows
+            tbody.empty();
+        
+            // Add table headers
+            var thead = $('.historyTable thead');
+            thead.empty();
+            var headersRow = $('<tr>');
+            headersRow.append($('<th>').text('Currency'));
+            headersRow.append($('<th>').text('Conversion Rate'));
+            thead.append(headersRow);
+        
+            // Loop through conversion rates and add rows to the table
             for (const currencyCode in histoicalConversionRates) {
-              // console.log(currencyCode + ': ' + currencies[currencyCode]);
-              var newRow = $('<tr>');
-              var currencyCell = $('<td>').text(currencyCode);
-              var rateCell = $('<td>').text(currencies[currencyCode]);
-
-              // Append cells to the row
-              newRow.append(currencyCell, rateCell);
-
-              // Append the row to the tbody
-              tbody.append(newRow);
+                var conversionRate = histoicalConversionRates[currencyCode];
+        
+                // Create a new table row
+                var newRow = $('<tr>');
+        
+                // Create table data cells for currency code and conversion rate
+                var currencyCell = $('<td>').text(currencyCode);
+                var rateCell = $('<td>').text(conversionRate);
+        
+                // Append cells to the row
+                newRow.append(currencyCell, rateCell);
+        
+                // Append the row to the tbody
+                tbody.append(newRow);
             }
-              // console.log(data.conversion_rates);
-              console.log(selectedCurrency);
-              $('.historyTable').css('display','inline-table');
-              $('#base-coin').text(selectedCurrency)
-
-          });
+        
+            // Show the table
+            $('.historyTable').css('display', 'inline-table');
+            $('#base-coin').text(selectedCurrency);
+        });
   });
 }
