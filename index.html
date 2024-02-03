@@ -60,28 +60,31 @@
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">$</span>
                                             <div class="form-floating">
-                                              <input type="number" class="form-control" id="currencyAmount" placeholder="Exchange amount"
-                                              aria-label="Dollar amount (with dot and two decimal places)">
-                                              <label for="currencyAmount">Exchange amount</label>
+                                                <input type="number" class="form-control" id="currencyAmount"
+                                                    placeholder="Exchange amount"
+                                                    aria-label="Dollar amount (with dot and two decimal places)">
+                                                <label for="currencyAmount">Exchange amount</label>
                                             </div>
-                                          </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <div class="form-floating">
-                                            <select class="form-select" id="baseCoinSelect" aria-label="Floating label select example">
+                                            <select class="form-select" id="baseCoinSelect"
+                                                aria-label="Floating label select example">
                                             </select>
                                             <label for="baseCoinSelect">From</label>
-                                          </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-1 col-md-12">
                                         <img class="convert-img" src="./assets/img/arrow.png">
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <div class="form-floating">
-                                            <select class="form-select" id="targetCoinSelect" aria-label="Floating label select example">
+                                            <select class="form-select" id="targetCoinSelect"
+                                                aria-label="Floating label select example">
                                             </select>
                                             <label for="targetCoinSelect">To</label>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- justify button to end -->
@@ -100,7 +103,7 @@
                     </div>
                 </div>
             </div>
-                
+
             <div class="card mt-3 rateCard">
                 <div class="card-header">
                     Conversion Rate
@@ -116,33 +119,37 @@
                 <div class="card-body">
                     <div class="container text-center">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-lg-6 col-md-12 mb-2">
                                 <div class="form-floating">
-                                    <select class="form-select" id="historicalBaseCoinSelect" aria-label="Floating label select example">
+                                    <select class="form-select" id="historicalBaseCoinSelect"
+                                        aria-label="Floating label select example">
                                     </select>
                                     <label for="historicalBaseCoinSelect">From</label>
-                                  </div>
+                                </div>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-floating">
 
                                     <input type="date" class="form-control" id="historicalDate" value="" />
                                     <label for="historicalDate">From</label>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="container text-center d-grid mt-3 mb-4">
                             <button type="button" class="btn btn-primary" id="getHistoryData">Convert</button>
 
                         </div>
-                        <table class="table historyTable">
-                            <thead>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            
-                          </table>
+                        <div class="table-responsive">
+                            <table class="table historyTable">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>

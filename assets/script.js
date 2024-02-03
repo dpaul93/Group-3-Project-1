@@ -108,22 +108,23 @@ function historicalCurrencyData(currencies) {
             for (const currencyCode in histoicalConversionRates) {
                 var conversionRate = histoicalConversionRates[currencyCode];
         
-                // Create a new table row
-                var newRow = $('<tr>');
+              // Create a new table row
+            var newRow = $('<tr>');
         
                 // Create table data cells for currency code and conversion rate
-                var currencyCell = $('<td>').text(currencyCode);
-                var rateCell = $('<td>').text(conversionRate);
+              var currencyCell = $('<td>').text(currencyCode);
+            var rateCell = $('<td>').text(conversionRate);
         
-                // Append cells to the row
-                newRow.append(currencyCell, rateCell);
+                  // Append cells to the row
+              newRow.append(currencyCell, rateCell);
         
-                // Append the row to the tbody
-                tbody.append(newRow);
+              // Append the row to the tbody
+              tbody.append(newRow);
             }
         
             // Show the table
             $('.historyTable').css('display', 'inline-table');
+            $('.table-responsive').css('overflow-y', 'scroll').css('height', '200px');
             $('#base-coin').text(selectedCurrency);
         });
   });
