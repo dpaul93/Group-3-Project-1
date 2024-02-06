@@ -16,14 +16,14 @@ body {
 
 .jumb-color .text-center {
     text-align: center;
-    color:white;
+    color: white;
 }
 
-.card{
+.card {
     top: -13vh
 }
 
-.jumb-color{
+.jumb-color {
     height: 42vh;
     background: url('./img/jumb-7.jpg');
     background-size: cover;
@@ -32,6 +32,14 @@ body {
     background-repeat: no-repeat;
 }
 
-.convert-img{
+.convert-img {
     width: 5vh;
+}
+
+.historyTable {
+    display: none;
+}
+
+.rateCard {
+    display: none;
 }
