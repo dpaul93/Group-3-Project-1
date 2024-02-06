@@ -42,6 +42,7 @@ function standardConversion(apikey) {
 
 standardConversion(apikey);
 
+
 function pairedConversion(apikey, baseCoin, targetCoin) {
 
     // Retrieve Value user enters into currency amount field and trim any white space
@@ -188,4 +189,3 @@ function historicalCurrencyData(currencies) {
             });
     });
 }
-
