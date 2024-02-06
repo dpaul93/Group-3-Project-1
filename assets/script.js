@@ -210,8 +210,8 @@ function cryptoCurrencyExchange(){
         
         console.log('Base Coin:', baseCryptoCoinSelect);
         console.log('Target Coin:', targetCryptoCoinSelect);
-})
-        var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=S0NDZHY4G2U06IUP';
+        // var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=S0NDZHY4G2U06IUP';
+        // var cryptoCurrencyReq = 'https://rest.coinapi.io/v1/exchangerate/' + baseCryptoCoinSelect + '/' + targetCryptoCoinSelect + '/apikey-4EBE0F1B-AFFB-44E0-870B-292AB2330BE4/';
     
         fetch(cryptoCurrencyReq)
             .then(function (response) {
@@ -220,15 +220,21 @@ function cryptoCurrencyExchange(){
             .then(function (data) {
                 console.log('Crypto Currency Exchange Data:', data);
                 // Process the exchange rate data here
+                var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim()
+                var exchangeRate = data.RealtimeCurrencyExchangeRate
+                var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
+                $('#cryptoConversion').text('here is the crypto exchange rate ', cryptoCurrencyAmountDisplay)
 
 
-                
+
             })
             .catch(function (error) {
                 console.error('Error:', error);
                 // Handle the error here, e.g., display an error message to the user
             });
-    };
+    });
     
+}
+        
 
 // cryptoCurrencyExchange()
