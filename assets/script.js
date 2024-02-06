@@ -1,6 +1,7 @@
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
 function standardConversion(apikey) {
+     
     var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
 
     fetch(standardConversion)
@@ -13,7 +14,7 @@ function standardConversion(apikey) {
 
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
-
+            cryptoCurrencyExchange(CryptoCurrencies)
             // Append conversion rates to select menus from the countryCodeMapping file
             for (var currency in currencies) {
                 // console.log(currency + ': ' + currencies[currency]);
@@ -21,6 +22,7 @@ function standardConversion(apikey) {
                     $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
 
+        
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
                 // Clear the input value
@@ -186,6 +188,47 @@ function historicalCurrencyData(currencies) {
                 // Add css to apply scroll to table and set height of table
                 $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
 
-            });
+            })
     });
 }
+
+
+
+function cryptoCurrencyExchange(){
+
+    // console.log('here ',CryptoCurrencies)
+
+     for (const currency in CryptoCurrencies) {
+                // console.log(currency + ': ' + CryptoCurrencies[currency]);
+                $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency])),
+                $('#targetCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency]));
+        
+    }
+    $('#convertCryptoButton').on('click', function () {
+        var baseCryptoCoinSelect = $('#baseCryptoCoinSelect').val();
+        var targetCryptoCoinSelect = $('#targetCryptoCoinSelect').val();
+        
+        console.log('Base Coin:', baseCryptoCoinSelect);
+        console.log('Target Coin:', targetCryptoCoinSelect);
+})
+        var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=S0NDZHY4G2U06IUP';
+    
+        fetch(cryptoCurrencyReq)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log('Crypto Currency Exchange Data:', data);
+                // Process the exchange rate data here
+
+
+                
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+                // Handle the error here, e.g., display an error message to the user
+            });
+    };
+    
+
+// cryptoCurrencyExchange()
