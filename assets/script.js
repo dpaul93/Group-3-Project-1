@@ -222,6 +222,7 @@ function historicalCurrencyData(currencies) {
                     // Show modal if there's an error
                     $('.historyTable').css('display', 'none');
                     $('#errorModal').modal('show');
+                    
                 } else {
                     $('.loading-message').hide();
                     var histoicalConversionRates = data.conversion_rates;
@@ -283,26 +284,40 @@ function historicalCurrencyData(currencies) {
 
 
 function cryptoCurrencyExchange() {
-
     $('.cryptoConversion').hide();
-    for (const currency in cryptoApiPhysicalCoins) {
-        $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + cryptoApiPhysicalCoins[currency]));
-    }
 
-    for (const currency in CryptoCurrencies) {
-        // console.log(currency + ': ' + CryptoCurrencies[currency]);
-        // $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency])),
-        $('#targetCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency]));
-
-    }
     // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
     $('#resetCryptoExchangeAmount').on('click', function () {
         // Clear the input value
         $('#cryptoCurrencyAmount').val('');
     });
+    for (const currency in cryptoApiPhysicalCoins) {
+        $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + cryptoApiPhysicalCoins[currency]));
+    }
 
-    $('.display-header-crypto').text('Crypto Conversion rates').removeClass('text-bg-danger').addClass('text-bg-success');
+    for (const currency in CryptoCurrencies) {
+        $('#targetCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency]));
+    }
     $('#convertCryptoButton').on('click', function () {
+
+        var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim();
+
+        // $('.display-header-crypto').text(').removeClass('text-bg-danger').addClass('text-bg-success');
+        // Check if no amount is entered or if it's 0
+        if (!cryptoCurrencyAmount || cryptoCurrencyAmount == 0) {
+            // Show the card to display the error message
+            $('.cryptoConversion').show();
+
+            // Adding header card background colour danger when user enters no currency or `0`
+            $('.display-header-crypto').html('<i class="bi bi-exclamation-diamond-fill"></i> Error').addClass('text-bg-danger');
+
+            // Adding text to card when user enters no currency or `0`
+            $('.cryptoConversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount Defined!</strong>');
+
+            // Exit function if no amount defined
+            return;
+        }
+
         var baseCryptoCoinSelect = $('#baseCryptoCoinSelect').val();
         var targetCryptoCoinSelect = $('#targetCryptoCoinSelect').val();
 
@@ -316,15 +331,27 @@ function cryptoCurrencyExchange() {
                 return response.json();
             })
             .then(function (data) {
+                if ('error' in data) {
+                    // Show modal if there's an error
+                    $('.cryptoConversion').show();
+
+                    // Adding header card background colour danger when user enters no currency or `0`
+                    $('.display-header-crypto').html('<i class="bi bi-exclamation-diamond-fill"></i> Error').addClass('text-bg-danger');
+
+                    // Adding text to card when user enters no currency or `0`
+                    $('.cryptoConversionRate').css('display', 'flex').html('<strong style="color:red;">'+data['error']+'</strong>');
+                } else {
+                    
+                
                 console.log('Crypto Currency Exchange Data:', data.rate);
                 // Process the exchange rate data here
-                var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim()
-                var exchangeRate = data.rate
-                var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
+                var exchangeRate = data.rate;
+                var assetIdQuote = data.asset_id_quote
+                var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount;
                 $('.cryptoConversion').show();
-                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay.toFixed(2))
-            })
-
+                $('.display-header-crypto').html('<i class="bi bi-currency-bitcoin"></i>').removeClass('text-bg-danger').addClass('text-bg-success');
+                $('.cryptoConversionRate').empty().html('<p class="fw-bold text-start">Crypto '+assetIdQuote+' rate : ' + cryptoCurrencyAmountDisplay.toFixed(2)+'</p>');
+            }
+            });
     });
-
 }
