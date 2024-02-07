@@ -180,14 +180,6 @@ function historicalCurrencyData(currencies) {
         // Get the selected date by the user input
         var selectedDate = $('#historicalDate').val();
 
-        // Check if the selected date is before   01/01/1990
-        var parsedDate = new Date(selectedDate);
-        if (parsedDate < new Date('1990-01-01')) {
-        // Show the modal
-        $('#errorModal').modal('show');
-        return; // Exit the function early since the date is invalid
-        }
-
         // Split the user selectedDate using the hyphen in between the date 
         var dateSplit = selectedDate.split('-');
 
@@ -203,7 +195,11 @@ function historicalCurrencyData(currencies) {
                 return response.json();
             })
             .then(function (data) {
-
+                console.log('error data', data['error-type'])
+                if ('error-type' in data) {
+                    // Show modal if there's an error
+                    $('#errorModal').modal('show');
+                }else {
                 $('.loading-message').hide();
                 var histoicalConversionRates = data.conversion_rates;
 
@@ -254,6 +250,8 @@ function historicalCurrencyData(currencies) {
 
                 // Add css to apply scroll to table and set height of table
                 $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
+                
+            }   
 
             })
     });
