@@ -110,7 +110,7 @@ function historicalCurrencyData(currencies) {
         $('#historicalBaseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
     }
     // Event listener for historical conversions
-    $('.badge').click(function() {
+    $('.badge').click(function () {
         var currencyCode = $(this).text(); // Get the text content of the clicked badge
         $('#historicalBaseCoinSelect').val(currencyCode) // Set the value of the drop-down menu
 
@@ -202,6 +202,7 @@ function historicalCurrencyData(currencies) {
 
 function cryptoCurrencyExchange() {
 
+    $('.cryptoConversion').hide();
     for (const currency in cryptoApiPhysicalCoins) {
         $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + cryptoApiPhysicalCoins[currency]));
     }
@@ -218,37 +219,30 @@ function cryptoCurrencyExchange() {
         $('#cryptoCurrencyAmount').val('');
     });
 
+    $('.display-header-crypto').text('Crypto Conversion rates').removeClass('text-bg-danger').addClass('text-bg-success');
     $('#convertCryptoButton').on('click', function () {
         var baseCryptoCoinSelect = $('#baseCryptoCoinSelect').val();
         var targetCryptoCoinSelect = $('#targetCryptoCoinSelect').val();
 
         console.log('Base Coin:', baseCryptoCoinSelect);
         console.log('Target Coin:', targetCryptoCoinSelect);
-        var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=O3MFG4ZCOL7HSB5K';
-        // var cryptoCurrencyReq = 'https://rest.coinapi.io/v1/exchangerate/' + baseCryptoCoinSelect + '/' + targetCryptoCoinSelect + '/apikey-4EBE0F1B-AFFB-44E0-870B-292AB2330BE4/';
+        // var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=O3MFG4ZCOL7HSB5K';
+        var cryptoCurrencyReq = 'https://rest.coinapi.io/v1/exchangerate/' + baseCryptoCoinSelect + '/' + targetCryptoCoinSelect + '/apikey-4EBE0F1B-AFFB-44E0-870B-292AB2330BE4/';
 
         fetch(cryptoCurrencyReq)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                console.log('Crypto Currency Exchange Data:', data);
+                console.log('Crypto Currency Exchange Data:', data.rate);
                 // Process the exchange rate data here
                 var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim()
-                var exchangeRate = data.RealtimeCurrencyExchangeRate
+                var exchangeRate = data.rate
                 var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
-                $('#cryptoConversion').text('here is the crypto exchange rate ', cryptoCurrencyAmountDisplay)
-
-
-
+                $('.cryptoConversion').show();
+                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay)
             })
-            .catch(function (error) {
-                console.error('Error:', error);
-                // Handle the error here, e.g., display an error message to the user
-            });
+
     });
 
 }
-
-
-// cryptoCurrencyExchange()
