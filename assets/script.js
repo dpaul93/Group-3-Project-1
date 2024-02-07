@@ -240,7 +240,7 @@ function cryptoCurrencyExchange() {
                 var exchangeRate = data.rate
                 var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
                 $('.cryptoConversion').show();
-                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay)
+                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay.toFixed(2))
             })
 
     });
