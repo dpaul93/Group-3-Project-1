@@ -1,12 +1,42 @@
-function loadHistory () {
-    // Load search history buttons from localStorage when the page loads
-    var coinSelectionsLocalStorageKey = JSON.parse(localStorage.getItem('coinSelections')) || [];
-    console.log(coinSelectionsLocalStorageKey)
-    
 
-}
-loadHistory()
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
+
+function loadHistory() {
+    var coinSelectionsLocalStorageKey = JSON.parse(localStorage.getItem('coinSelections')) || [];
+    $('#searchHistory').empty();
+
+    coinSelectionsLocalStorageKey.forEach(entry => {
+        let baseCoin = entry[0];
+        let targetCoin = entry[1];
+
+        var historyEntry = $('<div>').addClass('input-group mb-2');
+        var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
+
+        deleteButton.on('click', function() {
+            var indexToDelete = coinSelectionsLocalStorageKey.findIndex(item => item[0] === baseCoin && item[1] === targetCoin);
+            coinSelectionsLocalStorageKey.splice(indexToDelete, 1);
+            localStorage.setItem('coinSelections', JSON.stringify(coinSelectionsLocalStorageKey));
+            $(this).closest('.input-group').remove();
+        });
+
+        var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
+        historyEntry.append(searchHistoryButton, deleteButton);
+        $('#searchHistory').append(historyEntry);
+
+        // Add event listener to the search history button
+        searchHistoryButton.on('click', function() {
+            $('#baseCoinSelect').val(baseCoin);
+            $('#targetCoinSelect').val(targetCoin);
+            pairedConversion(apikey, baseCoin, targetCoin);
+        });
+    });
+}
+
+
+$(document).ready(function () {
+    // Load search history when the page is ready
+    loadHistory();
+});
 
 function standardConversion(apikey) {
     var baseCoinLocalStorageKey = 'baseCoin';
@@ -39,52 +69,38 @@ function standardConversion(apikey) {
                 $('#currencyAmount').val('');
             });
 
-            // Event listener for convert button
             $('#convertButton').on('click', function () {
-
                 // Get value of the base and target coin user has selected
                 var baseCoin = $('#baseCoinSelect').val();
                 var targetCoin = $('#targetCoinSelect').val();
-
+            
                 // Retrieve existing user selections from local storage
                 var existingSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
-                if (!existingSelections.includes(baseCoin, targetCoin)) {
+                
+                // Check if the new entry already exists in the stored data
+                var isNewEntry = existingSelections.some(function (entry) {
+                    return entry[0] === baseCoin && entry[1] === targetCoin;
+                });
+            
+                if (!isNewEntry) {
                     // Add the new search word to the array
                     existingSelections.push([baseCoin, targetCoin]);
-        
+                    
                     // Store the updated array back to localStorage
                     localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
-
+            
                     // Create and append the button for the new search word
                     var historyEntry = $('<div>').addClass('input-group mb-2');
-                    // Clear the existing content of the search history element
-                    $('#searchHistory').empty();
-                                    
-                    for (let index = 0; index < existingSelections.length; index++) {
-                        const element = existingSelections[index];
-                        console.log('base coin', element[0]);
-                        console.log('base coin', element[1]);
-                    
-                        // Create a new historyEntry div for each iteration
-                        var historyEntry = $('<div>').addClass('input-group mb-2');
-                    
-                        // Create buttons for baseCoin and targetCoin
-                        var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
-                        var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(element[0] + ' ' + element[1]);
-                        
-                        // Append buttons to historyEntry div
-                        historyEntry.append(searchHistoryButton, deleteButton);
-                    
-                        // Append historyEntry div to searchHistory element
-                        $('#searchHistory').append(historyEntry);
-                    }
-
-                    
+                    var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
+                    var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
+                    historyEntry.append(searchHistoryButton, deleteButton);
+                    $('#searchHistory').append(historyEntry);
                 }
-
+            
                 // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
             });
+            
         });
 }
 
