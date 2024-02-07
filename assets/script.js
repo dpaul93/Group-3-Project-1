@@ -1,6 +1,7 @@
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
 function standardConversion(apikey) {
+
     var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
 
     fetch(standardConversion)
@@ -13,13 +14,14 @@ function standardConversion(apikey) {
 
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
-
+            cryptoCurrencyExchange(currencies, CryptoCurrencies)
             // Append conversion rates to select menus from the countryCodeMapping file
             for (var currency in currencies) {
                 // console.log(currency + ': ' + currencies[currency]);
                 $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency])),
                     $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
+
 
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
@@ -107,6 +109,12 @@ function historicalCurrencyData(currencies) {
     for (var currency in currencies) {
         $('#historicalBaseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
     }
+    // Event listener for historical conversions
+    $('.badge').click(function () {
+        var currencyCode = $(this).text(); // Get the text content of the clicked badge
+        $('#historicalBaseCoinSelect').val(currencyCode) // Set the value of the drop-down menu
+
+    });
 
     // Event listener for historical conversions 
     $('#getHistoryData').on('click', function () {
@@ -186,6 +194,55 @@ function historicalCurrencyData(currencies) {
                 // Add css to apply scroll to table and set height of table
                 $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
 
-            });
+            })
     });
+}
+
+
+
+function cryptoCurrencyExchange() {
+
+    $('.cryptoConversion').hide();
+    for (const currency in cryptoApiPhysicalCoins) {
+        $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + cryptoApiPhysicalCoins[currency]));
+    }
+
+    for (const currency in CryptoCurrencies) {
+        // console.log(currency + ': ' + CryptoCurrencies[currency]);
+        // $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency])),
+        $('#targetCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency]));
+
+    }
+    // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
+    $('#resetCryptoExchangeAmount').on('click', function () {
+        // Clear the input value
+        $('#cryptoCurrencyAmount').val('');
+    });
+
+    $('.display-header-crypto').text('Crypto Conversion rates').removeClass('text-bg-danger').addClass('text-bg-success');
+    $('#convertCryptoButton').on('click', function () {
+        var baseCryptoCoinSelect = $('#baseCryptoCoinSelect').val();
+        var targetCryptoCoinSelect = $('#targetCryptoCoinSelect').val();
+
+        console.log('Base Coin:', baseCryptoCoinSelect);
+        console.log('Target Coin:', targetCryptoCoinSelect);
+        // var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=O3MFG4ZCOL7HSB5K';
+        var cryptoCurrencyReq = 'https://rest.coinapi.io/v1/exchangerate/' + baseCryptoCoinSelect + '/' + targetCryptoCoinSelect + '/apikey-4EBE0F1B-AFFB-44E0-870B-292AB2330BE4/';
+
+        fetch(cryptoCurrencyReq)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log('Crypto Currency Exchange Data:', data.rate);
+                // Process the exchange rate data here
+                var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim()
+                var exchangeRate = data.rate
+                var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
+                $('.cryptoConversion').show();
+                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay.toFixed(2))
+            })
+
+    });
+
 }
