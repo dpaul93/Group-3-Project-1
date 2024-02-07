@@ -43,3 +43,8 @@ body {
 .rateCard {
     display: none;
 }
+.size {
+    width: 65px;
+    height: 28px;
+    cursor: pointer; 
+}
