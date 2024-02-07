@@ -55,6 +55,11 @@ body {
     overflow-y: auto;
 }
 
+.single-conversion-table {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
 @media (max-width: 520px) {
     .card {
         top: -4vh;

@@ -3,8 +3,21 @@ var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
 $(document).ready(function () {
     // Load search history when the page is ready
+
     loadHistory();
-    standardConversion(apikey);
+    $('.nav-link').click(function(e) {
+        e.preventDefault(); // Prevent default link behavior
+        var targetTab = $(this).attr('href'); // Get target tab ID
+        var otherTab = targetTab === '#tab1' ? '#tab2' : '#tab1'; // Determine ID of the other tab content
+        $('.nav-link').removeClass('active'); // Remove active class from all tab links
+        $(this).addClass('active'); // Add active class to clicked tab link
+        $(otherTab).removeClass('active'); // Remove active class from other tab content
+        $(otherTab).hide(); // Hide other tab content
+        $(targetTab).addClass('active'); // Add active class to target tab content
+        $(targetTab).show(); // Show target tab content
+    });
+    
+    // standardConversion(apikey);
 });
 
 function loadHistory() {
@@ -29,7 +42,6 @@ function loadHistory() {
     });
 }
 
-
 function standardConversion(apikey) {
     var coinSelectionsLocalStorageKey = 'coinSelections'; // Define the key for storing user selections
 
@@ -41,7 +53,17 @@ function standardConversion(apikey) {
         })
         .then(function (data) {
 
-            // SINGLE CONVERSION LOGIC WILL GO HERE
+            console.log(data)
+            var SinglebaseCode = data.base_code
+            var singleconversionRates = data.conversion_rates
+            // Add the base code to the first row
+            $('.baseCodeSingle').text('Base Code: ' + SinglebaseCode)
+            // Iterate over the conversion rates and add rows to the table
+            $.each(singleconversionRates, function(currency, rate) {
+                var row = '<tr><td>' + currency + '</td><td>' + rate;
+                $('#conversionTableBody').append(row);
+            });
+
 
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
