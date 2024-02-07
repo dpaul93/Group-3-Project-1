@@ -43,3 +43,13 @@ body {
 .rateCard {
     display: none;
 }
+
+@media (max-width: 520px) {
+    .card {
+        top: -4vh;
+    }
+
+    .jumb-color {
+        height: 30vh;
+    }
+}
