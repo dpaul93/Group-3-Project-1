@@ -142,7 +142,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
         $('.display-header').html('<i class="bi bi-exclamation-diamond-fill"></i> Error').addClass('text-bg-danger')
 
         // Adding text to card when user enters no currency or `0`
-        $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
+        $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount Defined!</strong>');
 
         //exit function if no amount defined
         return
@@ -173,7 +173,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
             flagImg.attr('src', flagUrl);
 
             // Append the flag, converted rate, locale and currency name to conversion rate card
-            $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate + ' ' + locale + ' ' + currencyName);
+            $('.conversionRate').empty().append(flagImg).append(' ' + convertedRate.toFixed(2) + ' ' + locale + ' ' + currencyName);
         });
 }
 
