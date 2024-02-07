@@ -8,11 +8,15 @@ $(document).ready(function () {
     $('.nav-link').click(function(e) {
         e.preventDefault(); // Prevent default link behavior
         var targetTab = $(this).attr('href'); // Get target tab ID
+        var otherTab = targetTab === '#tab1' ? '#tab2' : '#tab1'; // Determine ID of the other tab content
         $('.nav-link').removeClass('active'); // Remove active class from all tab links
         $(this).addClass('active'); // Add active class to clicked tab link
-        $('.tab-content').hide(); // Hide all tab contents
+        $(otherTab).removeClass('active'); // Remove active class from other tab content
+        $(otherTab).hide(); // Hide other tab content
+        $(targetTab).addClass('active'); // Add active class to target tab content
         $(targetTab).show(); // Show target tab content
-      });
+    });
+    
     // standardConversion(apikey);
 });
 
@@ -59,6 +63,7 @@ function standardConversion(apikey) {
                 var row = '<tr><td>' + currency + '</td><td>' + rate;
                 $('#conversionTableBody').append(row);
             });
+
 
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
