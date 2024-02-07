@@ -1,6 +1,17 @@
+function loadHistory () {
+    // Load search history buttons from localStorage when the page loads
+    var coinSelectionsLocalStorageKey = JSON.parse(localStorage.getItem('coinSelections')) || [];
+    console.log(coinSelectionsLocalStorageKey)
+    
+
+}
+loadHistory()
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
 function standardConversion(apikey) {
+    var baseCoinLocalStorageKey = 'baseCoin';
+    var targetCoinLocalStorageKey = 'targetCoin';
+    var coinSelectionsLocalStorageKey = 'coinSelections'; // Define the key for storing user selections
 
     var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
 
@@ -17,11 +28,18 @@ function standardConversion(apikey) {
             cryptoCurrencyExchange(currencies, CryptoCurrencies)
             // Append conversion rates to select menus from the countryCodeMapping file
             for (var currency in currencies) {
-                // console.log(currency + ': ' + currencies[currency]);
-                $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency])),
-                    $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
+                $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
+                $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
 
+            // Retrieve user selections from local storage
+            var coinSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
+
+            // Set the selected options in the select menus
+            if (coinSelections.baseCoin && coinSelections.targetCoin) {
+                $('#baseCoinSelect').val(coinSelections.baseCoin);
+                $('#targetCoinSelect').val(coinSelections.targetCoin);
+            }
 
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
@@ -32,9 +50,25 @@ function standardConversion(apikey) {
             // Event listener for convert button
             $('#convertButton').on('click', function () {
 
-                //get value of the base and target coin user has selected
+                // Get value of the base and target coin user has selected
                 var baseCoin = $('#baseCoinSelect').val();
                 var targetCoin = $('#targetCoinSelect').val();
+
+                // Retrieve existing user selections from local storage
+                var existingSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
+                if (!existingSelections.includes(baseCoin, targetCoin)) {
+                    // Add the new search word to the array
+                    existingSelections.push(['baseCoin', baseCoin], ['TargetCoin', targetCoin]);
+        
+                    // Store the updated array back to localStorage
+                    localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
+                }
+                // Update the existing selections object with new selections
+                existingSelections.baseCoin = baseCoin;
+                existingSelections.targetCoin = targetCoin;
+
+                // Update user selections in local storage
+                localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
 
                 // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
@@ -43,6 +77,7 @@ function standardConversion(apikey) {
 }
 
 standardConversion(apikey);
+
 
 
 function pairedConversion(apikey, baseCoin, targetCoin) {
