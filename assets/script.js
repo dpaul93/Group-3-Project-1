@@ -117,7 +117,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
         $('.rateCard').show()
 
         // Adding header card background colour danger when user enters no currency or `0`
-        $('.display-header').text('Error').addClass('text-bg-danger')
+        $('.display-header').html('<i class="bi bi-exclamation-diamond-fill"></i> Error').addClass('text-bg-danger')
 
         // Adding text to card when user enters no currency or `0`
         $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
