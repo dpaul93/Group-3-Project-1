@@ -180,6 +180,14 @@ function historicalCurrencyData(currencies) {
         // Get the selected date by the user input
         var selectedDate = $('#historicalDate').val();
 
+        // Check if the selected date is before   01/01/1990
+        var parsedDate = new Date(selectedDate);
+        if (parsedDate < new Date('1990-01-01')) {
+        // Show the modal
+        $('#errorModal').modal('show');
+        return; // Exit the function early since the date is invalid
+        }
+
         // Split the user selectedDate using the hyphen in between the date 
         var dateSplit = selectedDate.split('-');
 
