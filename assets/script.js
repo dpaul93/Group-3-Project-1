@@ -198,6 +198,7 @@ function historicalCurrencyData(currencies) {
                 console.log('error data', data['error-type'])
                 if ('error-type' in data) {
                     // Show modal if there's an error
+                    $('.historyTable').css('display', 'none');
                     $('#errorModal').modal('show');
                 } else {
                     $('.loading-message').hide();
