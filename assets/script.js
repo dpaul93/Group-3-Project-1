@@ -1,6 +1,12 @@
 
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
+$(document).ready(function () {
+    // Load search history when the page is ready
+    loadHistory();
+    standardConversion(apikey);
+});
+
 function loadHistory() {
     var coinSelectionsLocalStorageKey = JSON.parse(localStorage.getItem('coinSelections')) || [];
     $('#searchHistory').empty();
@@ -10,17 +16,8 @@ function loadHistory() {
         let targetCoin = entry[1];
 
         var historyEntry = $('<div>').addClass('input-group mb-2');
-        var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
-
-        deleteButton.on('click', function() {
-            var indexToDelete = coinSelectionsLocalStorageKey.findIndex(item => item[0] === baseCoin && item[1] === targetCoin);
-            coinSelectionsLocalStorageKey.splice(indexToDelete, 1);
-            localStorage.setItem('coinSelections', JSON.stringify(coinSelectionsLocalStorageKey));
-            $(this).closest('.input-group').remove();
-        });
-
         var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
-        historyEntry.append(searchHistoryButton, deleteButton);
+        historyEntry.append(searchHistoryButton);
         $('#searchHistory').append(historyEntry);
 
         // Add event listener to the search history button
@@ -33,14 +30,7 @@ function loadHistory() {
 }
 
 
-$(document).ready(function () {
-    // Load search history when the page is ready
-    loadHistory();
-});
-
 function standardConversion(apikey) {
-    var baseCoinLocalStorageKey = 'baseCoin';
-    var targetCoinLocalStorageKey = 'targetCoin';
     var coinSelectionsLocalStorageKey = 'coinSelections'; // Define the key for storing user selections
 
     var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
@@ -91,9 +81,9 @@ function standardConversion(apikey) {
             
                     // Create and append the button for the new search word
                     var historyEntry = $('<div>').addClass('input-group mb-2');
-                    var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
+                    // var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
                     var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
-                    historyEntry.append(searchHistoryButton, deleteButton);
+                    historyEntry.append(searchHistoryButton);
                     $('#searchHistory').append(historyEntry);
                 }
             
