@@ -48,3 +48,7 @@ body {
     height: 28px;
     cursor: pointer; 
 }
+.scrollable{
+    max-height: 280px;
+    overflow-y: auto;
+}
