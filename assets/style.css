@@ -44,6 +44,17 @@ body {
     display: none;
 }
 
+.size {
+    width: 65px;
+    height: 28px;
+    cursor: pointer; 
+}
+
+.scrollable{
+    max-height: 280px;
+    overflow-y: auto;
+}
+
 @media (max-width: 520px) {
     .card {
         top: -4vh;

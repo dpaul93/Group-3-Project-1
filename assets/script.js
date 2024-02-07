@@ -1,6 +1,38 @@
+
 var apikey = '7f0a6ddf60b1ba51cd9d0d19';
 
+$(document).ready(function () {
+    // Load search history when the page is ready
+    loadHistory();
+    standardConversion(apikey);
+});
+
+function loadHistory() {
+    var coinSelectionsLocalStorageKey = JSON.parse(localStorage.getItem('coinSelections')) || [];
+    $('#searchHistory').empty();
+
+    coinSelectionsLocalStorageKey.forEach(entry => {
+        let baseCoin = entry[0];
+        let targetCoin = entry[1];
+
+        var historyEntry = $('<div>').addClass('input-group mb-2');
+        var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
+        historyEntry.append(searchHistoryButton);
+        $('#searchHistory').append(historyEntry);
+
+        // Add event listener to the search history button
+        searchHistoryButton.on('click', function() {
+            $('#baseCoinSelect').val(baseCoin);
+            $('#targetCoinSelect').val(targetCoin);
+            pairedConversion(apikey, baseCoin, targetCoin);
+        });
+    });
+}
+
+
 function standardConversion(apikey) {
+    var coinSelectionsLocalStorageKey = 'coinSelections'; // Define the key for storing user selections
+
     var standardConversion = 'https://v6.exchangerate-api.com/v6/' + apikey + '/latest/GBP';
 
     fetch(standardConversion)
@@ -13,34 +45,57 @@ function standardConversion(apikey) {
 
             //Allow historicalCurrencyData function to access the currencies in the countryCodeMapping.js file
             historicalCurrencyData(currencies)
-
+            cryptoCurrencyExchange(currencies, CryptoCurrencies)
             // Append conversion rates to select menus from the countryCodeMapping file
             for (var currency in currencies) {
-                // console.log(currency + ': ' + currencies[currency]);
-                $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency])),
-                    $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
+                $('#baseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
+                $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
 
+        
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
                 // Clear the input value
                 $('#currencyAmount').val('');
             });
 
-            // Event listener for convert button
             $('#convertButton').on('click', function () {
-
-                //get value of the base and target coin user has selected
+                // Get value of the base and target coin user has selected
                 var baseCoin = $('#baseCoinSelect').val();
                 var targetCoin = $('#targetCoinSelect').val();
-
+            
+                // Retrieve existing user selections from local storage
+                var existingSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
+                
+                // Check if the new entry already exists in the stored data
+                var isNewEntry = existingSelections.some(function (entry) {
+                    return entry[0] === baseCoin && entry[1] === targetCoin;
+                });
+            
+                if (!isNewEntry) {
+                    // Add the new search word to the array
+                    existingSelections.push([baseCoin, targetCoin]);
+                    
+                    // Store the updated array back to localStorage
+                    localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
+            
+                    // Create and append the button for the new search word
+                    var historyEntry = $('<div>').addClass('input-group mb-2');
+                    // var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
+                    var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(baseCoin + ' ' + targetCoin);
+                    historyEntry.append(searchHistoryButton);
+                    $('#searchHistory').append(historyEntry);
+                }
+            
                 // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
             });
+            
         });
 }
 
 standardConversion(apikey);
+
 
 
 function pairedConversion(apikey, baseCoin, targetCoin) {
@@ -62,7 +117,7 @@ function pairedConversion(apikey, baseCoin, targetCoin) {
         $('.rateCard').show()
 
         // Adding header card background colour danger when user enters no currency or `0`
-        $('.display-header').text('Error').addClass('text-bg-danger')
+        $('.display-header').html('<i class="bi bi-exclamation-diamond-fill"></i> Error').addClass('text-bg-danger')
 
         // Adding text to card when user enters no currency or `0`
         $('.conversionRate').css('display', 'flex').html('<strong style="color:red;">No Amount defined!</strong>');
@@ -107,6 +162,12 @@ function historicalCurrencyData(currencies) {
     for (var currency in currencies) {
         $('#historicalBaseCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
     }
+    // Event listener for historical conversions
+    $('.badge').click(function () {
+        var currencyCode = $(this).text(); // Get the text content of the clicked badge
+        $('#historicalBaseCoinSelect').val(currencyCode) // Set the value of the drop-down menu
+
+    });
 
     // Event listener for historical conversions 
     $('#getHistoryData').on('click', function () {
@@ -118,6 +179,14 @@ function historicalCurrencyData(currencies) {
 
         // Get the selected date by the user input
         var selectedDate = $('#historicalDate').val();
+
+        // Check if the selected date is before   01/01/1990
+        var parsedDate = new Date(selectedDate);
+        if (parsedDate < new Date('1990-01-01')) {
+        // Show the modal
+        $('#errorModal').modal('show');
+        return; // Exit the function early since the date is invalid
+        }
 
         // Split the user selectedDate using the hyphen in between the date 
         var dateSplit = selectedDate.split('-');
@@ -186,6 +255,55 @@ function historicalCurrencyData(currencies) {
                 // Add css to apply scroll to table and set height of table
                 $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
 
-            });
+            })
     });
+}
+
+
+
+function cryptoCurrencyExchange() {
+
+    $('.cryptoConversion').hide();
+    for (const currency in cryptoApiPhysicalCoins) {
+        $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + cryptoApiPhysicalCoins[currency]));
+    }
+
+    for (const currency in CryptoCurrencies) {
+        // console.log(currency + ': ' + CryptoCurrencies[currency]);
+        // $('#baseCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency])),
+        $('#targetCryptoCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + CryptoCurrencies[currency]));
+
+    }
+    // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
+    $('#resetCryptoExchangeAmount').on('click', function () {
+        // Clear the input value
+        $('#cryptoCurrencyAmount').val('');
+    });
+
+    $('.display-header-crypto').text('Crypto Conversion rates').removeClass('text-bg-danger').addClass('text-bg-success');
+    $('#convertCryptoButton').on('click', function () {
+        var baseCryptoCoinSelect = $('#baseCryptoCoinSelect').val();
+        var targetCryptoCoinSelect = $('#targetCryptoCoinSelect').val();
+
+        console.log('Base Coin:', baseCryptoCoinSelect);
+        console.log('Target Coin:', targetCryptoCoinSelect);
+        // var cryptoCurrencyReq = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' + baseCryptoCoinSelect + '&to_currency=' + targetCryptoCoinSelect + '&apikey=O3MFG4ZCOL7HSB5K';
+        var cryptoCurrencyReq = 'https://rest.coinapi.io/v1/exchangerate/' + baseCryptoCoinSelect + '/' + targetCryptoCoinSelect + '/apikey-4EBE0F1B-AFFB-44E0-870B-292AB2330BE4/';
+
+        fetch(cryptoCurrencyReq)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log('Crypto Currency Exchange Data:', data.rate);
+                // Process the exchange rate data here
+                var cryptoCurrencyAmount = $('#cryptoCurrencyAmount').val().trim()
+                var exchangeRate = data.rate
+                var cryptoCurrencyAmountDisplay = exchangeRate * cryptoCurrencyAmount
+                $('.cryptoConversion').show();
+                $('.cryptoConversionRate').empty().append('Crypto exchange rate' + ' ' + cryptoCurrencyAmountDisplay.toFixed(2))
+            })
+
+    });
+
 }
