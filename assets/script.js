@@ -5,11 +5,11 @@ $(document).ready(function () {
     // Load search history when the page is ready
 
     loadHistory();
-    $('.nav-link').click(function(e) {
+    $('.currency-nav').click(function(e) {
         e.preventDefault(); // Prevent default link behavior
         var targetTab = $(this).attr('href'); // Get target tab ID
         var otherTab = targetTab === '#tab1' ? '#tab2' : '#tab1'; // Determine ID of the other tab content
-        $('.nav-link').removeClass('active'); // Remove active class from all tab links
+        $('.currency-nav').removeClass('active'); // Remove active class from all tab links
         $(this).addClass('active'); // Add active class to clicked tab link
         $(otherTab).removeClass('active'); // Remove active class from other tab content
         $(otherTab).hide(); // Hide other tab content
