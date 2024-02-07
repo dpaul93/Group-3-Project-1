@@ -32,15 +32,7 @@ function standardConversion(apikey) {
                 $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
 
-            // Retrieve user selections from local storage
-            var coinSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
-
-            // Set the selected options in the select menus
-            if (coinSelections.baseCoin && coinSelections.targetCoin) {
-                $('#baseCoinSelect').val(coinSelections.baseCoin);
-                $('#targetCoinSelect').val(coinSelections.targetCoin);
-            }
-
+        
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
                 // Clear the input value
@@ -58,17 +50,37 @@ function standardConversion(apikey) {
                 var existingSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
                 if (!existingSelections.includes(baseCoin, targetCoin)) {
                     // Add the new search word to the array
-                    existingSelections.push(['baseCoin', baseCoin], ['TargetCoin', targetCoin]);
+                    existingSelections.push([baseCoin, targetCoin]);
         
                     // Store the updated array back to localStorage
                     localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
-                }
-                // Update the existing selections object with new selections
-                existingSelections.baseCoin = baseCoin;
-                existingSelections.targetCoin = targetCoin;
 
-                // Update user selections in local storage
-                localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
+                    // Create and append the button for the new search word
+                    var historyEntry = $('<div>').addClass('input-group mb-2');
+                    // Clear the existing content of the search history element
+                    $('#searchHistory').empty();
+                                    
+                    for (let index = 0; index < existingSelections.length; index++) {
+                        const element = existingSelections[index];
+                        console.log('base coin', element[0]);
+                        console.log('base coin', element[1]);
+                    
+                        // Create a new historyEntry div for each iteration
+                        var historyEntry = $('<div>').addClass('input-group mb-2');
+                    
+                        // Create buttons for baseCoin and targetCoin
+                        var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
+                        var searchHistoryButton = $("<button>").addClass("btn btn-primary form-control").text(element[0] + ' ' + element[1]);
+                        
+                        // Append buttons to historyEntry div
+                        historyEntry.append(searchHistoryButton, deleteButton);
+                    
+                        // Append historyEntry div to searchHistory element
+                        $('#searchHistory').append(historyEntry);
+                    }
+
+                    
+                }
 
                 // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
