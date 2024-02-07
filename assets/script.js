@@ -21,7 +21,7 @@ function loadHistory() {
         $('#searchHistory').append(historyEntry);
 
         // Add event listener to the search history button
-        searchHistoryButton.on('click', function() {
+        searchHistoryButton.on('click', function () {
             $('#baseCoinSelect').val(baseCoin);
             $('#targetCoinSelect').val(targetCoin);
             pairedConversion(apikey, baseCoin, targetCoin);
@@ -52,7 +52,7 @@ function standardConversion(apikey) {
                 $('#targetCoinSelect').append($('<option>').attr('value', currency).text(currency + ': ' + currencies[currency]));
             }
 
-        
+
             // Clear the conversionRate card text when the reset button is clicked on the currencyAmount input field
             $('#resetExchangeAmount').on('click', function () {
                 // Clear the input value
@@ -63,22 +63,22 @@ function standardConversion(apikey) {
                 // Get value of the base and target coin user has selected
                 var baseCoin = $('#baseCoinSelect').val();
                 var targetCoin = $('#targetCoinSelect').val();
-            
+
                 // Retrieve existing user selections from local storage
                 var existingSelections = JSON.parse(localStorage.getItem(coinSelectionsLocalStorageKey)) || [];
-                
+
                 // Check if the new entry already exists in the stored data
                 var isNewEntry = existingSelections.some(function (entry) {
                     return entry[0] === baseCoin && entry[1] === targetCoin;
                 });
-            
+
                 if (!isNewEntry) {
                     // Add the new search word to the array
                     existingSelections.push([baseCoin, targetCoin]);
-                    
+
                     // Store the updated array back to localStorage
                     localStorage.setItem(coinSelectionsLocalStorageKey, JSON.stringify(existingSelections));
-            
+
                     // Create and append the button for the new search word
                     var historyEntry = $('<div>').addClass('input-group mb-2');
                     // var deleteButton = $('<button>').addClass('btn btn-danger').text('Delete');
@@ -86,11 +86,11 @@ function standardConversion(apikey) {
                     historyEntry.append(searchHistoryButton);
                     $('#searchHistory').append(historyEntry);
                 }
-            
+
                 // Pass the above values into the pairedConversion function to run paired conversion request
                 pairedConversion(apikey, baseCoin, targetCoin);
             });
-            
+
         });
 }
 
@@ -199,59 +199,59 @@ function historicalCurrencyData(currencies) {
                 if ('error-type' in data) {
                     // Show modal if there's an error
                     $('#errorModal').modal('show');
-                }else {
-                $('.loading-message').hide();
-                var histoicalConversionRates = data.conversion_rates;
+                } else {
+                    $('.loading-message').hide();
+                    var histoicalConversionRates = data.conversion_rates;
 
-                // Reference to the tbody element
-                var tbody = $('.historyTable tbody');
+                    // Reference to the tbody element
+                    var tbody = $('.historyTable tbody');
 
-                // Clear the table body before adding new rows
-                tbody.empty();
+                    // Clear the table body before adding new rows
+                    tbody.empty();
 
-                // Add table headers
-                var thead = $('.historyTable thead');
+                    // Add table headers
+                    var thead = $('.historyTable thead');
 
-                // Clear table headers
-                thead.empty();
+                    // Clear table headers
+                    thead.empty();
 
-                // Create new table row
-                var headersRow = $('<tr>');
+                    // Create new table row
+                    var headersRow = $('<tr>');
 
-                // Append currency text to table head to headers row
-                headersRow.append($('<th>').text('Currency'));
+                    // Append currency text to table head to headers row
+                    headersRow.append($('<th>').text('Currency'));
 
-                // Append Conversion Rate text to table head to headers row
-                headersRow.append($('<th>').text('Conversion Rate'));
+                    // Append Conversion Rate text to table head to headers row
+                    headersRow.append($('<th>').text('Conversion Rate'));
 
-                // Append headers row with text to table head
-                thead.append(headersRow);
+                    // Append headers row with text to table head
+                    thead.append(headersRow);
 
-                // Loop through conversion rates and add rows to the table
-                for (const currencyCode in histoicalConversionRates) {
-                    var conversionRate = histoicalConversionRates[currencyCode];
+                    // Loop through conversion rates and add rows to the table
+                    for (const currencyCode in histoicalConversionRates) {
+                        var conversionRate = histoicalConversionRates[currencyCode];
 
-                    // Create a new table row
-                    var newRow = $('<tr>');
+                        // Create a new table row
+                        var newRow = $('<tr>');
 
-                    // Create table data cells for currency code and conversion rate
-                    var currencyCell = $('<td>').text(currencyCode);
-                    var rateCell = $('<td>').text(conversionRate);
+                        // Create table data cells for currency code and conversion rate
+                        var currencyCell = $('<td>').text(currencyCode);
+                        var rateCell = $('<td>').text(conversionRate);
 
-                    // Append cells to the row
-                    newRow.append(currencyCell, rateCell);
+                        // Append cells to the row
+                        newRow.append(currencyCell, rateCell);
 
-                    // Append the row to the tbody
-                    tbody.append(newRow);
+                        // Append the row to the tbody
+                        tbody.append(newRow);
+                    }
+
+                    // Show the table
+                    $('.historyTable').css('display', 'inline-table');
+
+                    // Add css to apply scroll to table and set height of table
+                    $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
+
                 }
-
-                // Show the table
-                $('.historyTable').css('display', 'inline-table');
-
-                // Add css to apply scroll to table and set height of table
-                $('.table-responsive').css('overflow-y', 'scroll').css('height', '453px');
-                
-            }   
 
             })
     });
