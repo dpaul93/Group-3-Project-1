@@ -102,11 +102,11 @@ body {
     opacity: 1;    
   }
 
-.card {
+.widget-card {
     transition: transform 0.8s;
 }
 
-.card:hover {
+.widget-card:hover {
     transform: scale(1.03);    
     box-shadow: #ff0 0 -2px 10px, 4px 3px 11px 5px rgba(49,5,255,0.25);
 }
