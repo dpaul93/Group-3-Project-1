@@ -355,3 +355,146 @@ function cryptoCurrencyExchange() {
             });
     });
 }
+
+// WIDGETS
+document.addEventListener('DOMContentLoaded', function() {
+    // WEATHER
+    const fetchWeatherData = (city) => {
+        const currentDate = dayjs().format('DD-MMM-YYYY');   
+        const apiKey = '2fb2e898d56792b6d47cffb5c77a6d47';
+        const queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+        fetch(queryURL)
+            .then(response => {        
+                if (!response.ok) {
+                    throw new Error(`Error! Status: ${response.status}`);
+                }       
+                return response.json();
+            })
+            .then(data => {                
+                const weatherToday = document.getElementById('today');    
+                let icon = data.list[0].weather[0].icon;
+                let iconUrl =  `https://openweathermap.org/img/wn/${icon}.png`;       
+
+                // Show weather for the current day
+                weatherToday.innerHTML = `
+                    <h4>${data.city.name} <img src="${iconUrl}" width="70px"></h4>  
+                    <h6>${currentDate}"</h6> 
+                    <p>Temp: ${data.list[0].main.temp} &degC </p>
+                    <p>Wind: ${data.list[0].wind.speed} KPH</p>
+                    <p>Humidity: ${data.list[0].main.humidity}%</p>
+                `;   
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);                
+            });
+    };
+
+    fetchWeatherData('London');    
+    document.getElementById('search-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const city = document.getElementById('search-input').value.trim();
+        if (!city) {            
+            fetchWeatherData('London');
+        } else {
+            fetchWeatherData(city);
+        }
+    });
+
+    // BITCOIN
+    function fetchBitcoin() {
+        fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
+            .then(response => response.json())
+            .then(data => {                           
+                document.getElementById('bitcoin').innerHTML = `
+                    <p>
+                        <img src= "./assets/img/bitcoin_body.png" width="28px"> BTC 
+                         = 
+                        <img src= "./assets/img/gbp.png" width="28px">
+                        ${data.bpi.GBP.symbol}
+                        ${data.bpi.GBP.rate}
+                    </p>
+                    <p>
+                        <img src= "./assets/img/bitcoin_body.png" width="28px"> BTC 
+                        =      
+                        <img src= "./assets/img/usd.png" width="28px">                                         
+                        ${data.bpi.USD.symbol}
+                        ${data.bpi.USD.rate}
+                    </p>
+                    <p>
+                        <img src= "./assets/img/bitcoin_body.png" width="28px"> BTC 
+                        =      
+                        <img src= "./assets/img/euro.png" width="28px">                                               
+                        ${data.bpi.EUR.symbol}
+                        ${data.bpi.EUR.rate}
+                    </p>
+                    
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching Bitcoin:', error);
+            });
+    }
+    fetchBitcoin();    
+
+    // ETHEREUM
+    function fetchEthereum() {
+        const apiKeyETH = '9fcf5c55d40c91ff543fa9b240c6e9f8952e951e15fd85031e9861fd449133d6';
+        fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,DASH&tsyms=BTC,USD,EUR&api_key=INSERT-${apiKeyETH}`)
+            .then(response => response.json())
+            .then(data => {                                           
+                document.getElementById('ethereum').innerHTML = `
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                         = 
+                        <img src= "./assets/img/bitcoin_body.png" width="28px">
+                        ${data.ETH.BTC}                        
+                    </p>
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                        =      
+                        <img src= "./assets/img/usd.png" width="28px">                                         
+                        ${data.ETH.USD}
+                    </p>
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                        =      
+                        <img src= "./assets/img/euro.png" width="28px">                                               
+                        ${data.ETH.EUR}
+                    </p>
+                    
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching Bitcoin:', error);
+            });
+    }
+    fetchEthereum();
+
+
+    // CALENDAR
+    const weekDay = dayjs().format('dddd');
+    const month = dayjs().format('MMMM');
+    const date = dayjs().format('DD');
+    const year = dayjs().format('YYYY');
+
+    function updateCurrentTime() {
+        const currentTimeElement = document.getElementById('current-time');    
+        const currentTime = dayjs().format('HH:mm:ss');
+        currentTimeElement.textContent = currentTime;
+    }  
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000); 
+
+    const currentDay = document.getElementById('current-day');
+    currentDay.textContent = weekDay;
+
+    const currentMonth = document.getElementById('current-month');
+    currentMonth.textContent = month;
+
+    const currentDate = document.getElementById('current-date');
+    currentDate.textContent = date;
+
+    const currentYear = document.getElementById('current-year');
+    currentYear.textContent = year;
+});
