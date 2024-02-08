@@ -74,34 +74,6 @@ body {
 .today p {
     margin-bottom: 8px;    
 }
-
-.calendar {
-    position: relative;
-    z-index: 1;
-}
-.snowman {   
-    text-align: end;       
-}
-
-.snowman img {
-    width: 120px;    
-    transform-origin: center center; 
-    transition-duration: 800ms;
-    margin-bottom: -75px;
-    opacity: 0;
-    z-index: -1;
-}
-.card-body-items {
-    position: relative;
-    z-index: 99;
-}
-
-.calendar:hover .snowman img{
-    transform: translateY(-40px);
-    transition-duration: 800ms;
-    opacity: 1;    
-  }
-
 .widget-card {
     transition: transform 0.8s;
 }

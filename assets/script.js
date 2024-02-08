@@ -437,22 +437,39 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     fetchBitcoin();    
 
-    // JOKE
-    function fetchJoke() {
-        fetch('https://official-joke-api.appspot.com/random_joke')
+    // ETHEREUM
+    function fetchEthereum() {
+        const apiKeyETH = '9fcf5c55d40c91ff543fa9b240c6e9f8952e951e15fd85031e9861fd449133d6';
+        fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,DASH&tsyms=BTC,USD,EUR&api_key=INSERT-${apiKeyETH}`)
             .then(response => response.json())
-            .then(data => {            
-                document.getElementById('joke').innerHTML = `
-                    <p>- ${data.setup}</p>
-                    <p>- ${data.punchline}</p>
+            .then(data => {                                           
+                document.getElementById('ethereum').innerHTML = `
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                         = 
+                        <img src= "./assets/img/bitcoin_body.png" width="28px">
+                        ${data.ETH.BTC}                        
+                    </p>
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                        =      
+                        <img src= "./assets/img/usd.png" width="28px">                                         
+                        ${data.ETH.USD}
+                    </p>
+                    <p>
+                        <img src= "./assets/img/eth.png" width="28px"> ETH 
+                        =      
+                        <img src= "./assets/img/euro.png" width="28px">                                               
+                        ${data.ETH.EUR}
+                    </p>
+                    
                 `;
             })
             .catch(error => {
-                console.error('Error fetching joke:', error);
+                console.error('Error fetching Bitcoin:', error);
             });
     }
-    fetchJoke();
-    document.getElementById('joke-button').addEventListener('click', fetchJoke);
+    fetchEthereum();
 
 
     // CALENDAR
