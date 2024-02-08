@@ -1,7 +1,15 @@
 # Group-3-Project-1
+
+## Currency Exchange
+[![HTML](https://img.shields.io/badge/HTML-5-orange?style=flat&logo=html5&logoColor=white)](https://www.w3.org/TR/html52/)
+![Bootstrap](https://img.shields.io/badge/bootstrap-5-blue?style=style=flat&logo=bootstrap&logoColor=white)
+![jquery](https://img.shields.io/badge/jquery-5-orange?style=style=flat&logo=jquery&logoColor=orange)
+![css](https://img.shields.io/badge/css-5-orange?style=style=flat&logo=css&logoColor=white)
+![Api](https://img.shields.io/badge/Api-5-orange?style=style=flat&logo=Api&logoColor=white)
+
 Bootcamp project 1. AGILE group project.
 
-Contibutors
+## Contibutors 
 
 Dominic Paul
 Khubaib Shah
@@ -16,9 +24,10 @@ Julio Cesar Marcondes
 
 -   As a user interested in international finance, I want a currency    conversion app that not only facilitates quick and accurate conversions but also provides me with the ability to convert between fiat and crypto currencies. This integrated feature will help me make informed decisions based on both financial data regardless of where my money is held.
 
-Breakdown of roles and tasks:
+## Breakdown of roles and tasks:
 
     Project Manager
+    
 
  - Responsible for overseeing project timeline - deadlines - communication - coordination.
 
@@ -31,23 +40,25 @@ Breakdown of roles and tasks:
 
     Quality Assurance
 
-Within the Kanban board within GitHub project all tickets needed to pass through test before going into PROD.
+- Within the Kanban board within GitHub project all tickets needed to pass through test before going into PROD.
 
-Acceptance Criteria 
 
-Application uses at least two server-side APIsLinks to an external site..
+## User Acceptance Criteria
 
-Application uses client-side storage to store persistent data.
+- Application uses at least two server-side APIsLinks to an external site..
+ 
+- Application uses client-side storage to store persistent data.
+ 
+- Application doesn't use JS alerts, prompts, or confirms (uses modals instead).
+ 
+- Application uses Bootstrap.
+ 
+- Application is interactive (accepts and responds to user input).
 
-Application doesn't use JS alerts, prompts, or confirms (uses modals instead).
+- We have satisfied all of the above.
 
-Application uses Bootstrap.
-
-Application is interactive (accepts and responds to user input).
-
-We have satisfied all of the above.
-
-Screen shots of the application can be seen below:
+## Mock-Up
+The following Screenshots demonstrate the application functionality:
 
 ![alt text](image.png)
 
@@ -57,11 +68,11 @@ Screen shots of the application can be seen below:
 
 ![alt text](image-3.png)
 
+## Deployed application
+### After completing my Weather Dashboard project, I deployed it to GitHub Pages for public access.
 
-Live Page:
+ - Click here for the [Live Site](https://dpaul93.github.io/Group-3-Project-1/)
 
-https://dpaul93.github.io/Group-3-Project-1/
+### GitHub Repository 
 
-GitHub Repository 
-
-https://github.com/dpaul93/Group-3-Project-1
+ - Click here for the [GitHub Repo](https://github.com/dpaul93/Group-3-Project-1)
