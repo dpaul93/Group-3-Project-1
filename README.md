@@ -22,7 +22,7 @@ Julio Cesar Marcondes
 -   We wanted a simple and intuitive application to convert from standard 
     currencies and also crypto currencies.
 
--   As a user interested in international finance, I want a currency    conversion app that not only facilitates quick and accurate conversions but also provides me with the ability to convert between fiat and crypto currencies. This integrated feature will help me make informed decisions based on both financial data regardless of where my money is held.
+-   As a user interested in international finance, I want a currency conversion app that not only facilitates quick and accurate conversions but also provides me with the ability to convert between fiat and crypto currencies. This integrated feature will help me make informed decisions based on both financial data regardless of where my money is held.
 
 ## Breakdown of roles and tasks:
 
@@ -69,7 +69,7 @@ The following Screenshots demonstrate the application functionality:
 ![alt text](image-3.png)
 
 ## Deployed application
-### After completing my Weather Dashboard project, I deployed it to GitHub Pages for public access.
+### After completing my Currency Compass project, we deployed it to GitHub Pages for public access.
 
  - Click here for the [Live Site](https://dpaul93.github.io/Group-3-Project-1/)
 
