@@ -58,3 +58,10 @@ Screen shots of the application can be seen below:
 ![alt text](image-3.png)
 
 
+Live Page:
+
+https://dpaul93.github.io/Group-3-Project-1/
+
+GitHub Repository 
+
+https://github.com/dpaul93/Group-3-Project-1
