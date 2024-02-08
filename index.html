@@ -310,7 +310,85 @@
         </div>
     </div>
 
+    <!-- WIDGETS -->
+    <div class="container mt-4 pt-4">
+        <div class="row row-cols-1 row-cols-xl-4 row-cols-sm-2 g-4">
+            <!-- WEATHER -->
+            <div class="col">
+                <div class="card h-100 p-3 weather fw-bold">                
+                    <form id="search-form" class="form">
+                        <div class="form-inline form-group">
+                            <div class="input-group d-flex">
+                                <input type="text" class="form-control weather-search mt-3" id="search-input" placeholder="London" aria-labelledby="form-heading"
+                                aria-controls="today forecast">
+                                <button class="btn btn btn-warning mt-3" type="submit" id="search-button" aria-label="submit search"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                </button>      
+                            </div>
+                        </div>
+                    </form>
+                    <section id="today" class="today p-2 fs-5" role="region" aria-live="polite"></section>
+                </div>
+            </div>
+            <!-- BITCOIN -->
+            <div class="col bitcoin-card">
+              <div class="card h-100">     
+                <div class="card-header bg-warning text-center">                     
+                    <h5>
+                        <img src= "./assets/img/bitcoin_header.png" width="28px"> 
+                        BTC price
+                    </h5>
+                </div>             
+                <div class="card-body text-center fw-bold d-flex flex-column justify-content-center" id="bitcoin">                  
+                </div>
+                <div class="card-footer bg-success">
+                    <p class="text-center">
+                        <a href="https://www.bitcoin.com/" target="_blank" class="fw-bold text-light text-decoration-none link-opacity-50-hover">Read more about crypto</a>
+                    </p>                                           
+                </div>   
+              </div>
+            </div>
+            <!-- JOKE -->
+            <div class="col">
+              <div class="card h-100" id="joke-container">    
+                <div class="card-header bg-warning text-center">  
+                    <h5>JOKES</h5>
+                </div>            
+                <div class="card-body mt-3 d-flex flex-column justify-content-center fw-bold" id="joke">                  
+                </div>
+                <button type="button" class="btn card-footer bg-success bor" id="joke-button">
+                    <p class="fw-bolder text-light">Press for a joke</p>                                                               
+                </button>
+              </div>
+            </div>
+            <!-- CURRENT DATE AND TIME -->
+            <div class="col">
+                <div class="card h-100 calendar text-center">
+                    <div class="card-header bg-warning">  
+                        <h5 class="current-day" id="current-day"></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body-items">
+                            <h4 class="current-month" id="current-month"></h4>
+                            <h2 class="current-date fw-bolder text-danger display-3" id="current-date"></h2>
+                            <p class="current-time fw-bold" id="current-time"></p>
+                        </div>                        
+                        <div class="snowman z-1">
+                            <img src="./assets/img/snowman_top.png" alt="snowman">
+                        </div> 
+                    </div>
+                    <div class="card-footer bg-success z-3">
+                        <p class="current-year fw-bolder text-light" id="current-year"></p>                        
+                    </div>                    
+                </div>                
+            </div>
+        </div> 
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="./assets/script.js"></script>
     <script src="./assets/countryCodeMapping.js"></script>
     <script src="./assets/cryptoCurrencyMapping.js"></script>
